@@ -14,7 +14,7 @@ import { pool } from "./database.js";
 
 // Intializations
 const app = express();
-export const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const MySQLStore = expressMySQLSession(session);
 
 // Settings
@@ -64,6 +64,6 @@ app.use(routes);
 
 
 // Public
-app.use(express.static("/home/ubuntu/nails/_work/Proyecto_Software_3/Proyecto_Software_3/src/public"));
+app.use(express.static(path.join(__dirname, "public")));
 
 export default app;
