@@ -64,6 +64,6 @@ app.use(routes);
 
 
 // Public
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static("/home/ubuntu/nails/_work/Proyecto_Software_3/Proyecto_Software_3/src/public"));
 
 export default app;
