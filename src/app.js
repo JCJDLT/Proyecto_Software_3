@@ -14,7 +14,7 @@ import { pool } from "./database.js";
 
 // Intializations
 const app = express();
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+export const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const MySQLStore = expressMySQLSession(session);
 
 // Settings
