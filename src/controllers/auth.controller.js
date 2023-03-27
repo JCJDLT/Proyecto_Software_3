@@ -55,3 +55,11 @@ export const renderSignIn = (req, res, next) => {
     username,
   });
 };
+
+
+export const logout = (req, res, next) => {
+  req.logout(function (err) {
+    if (err) { return next(err); }
+    res.redirect('/');
+  });
+};
