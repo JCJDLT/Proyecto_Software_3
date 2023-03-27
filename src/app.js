@@ -10,6 +10,8 @@ import expressMySQLSession from "express-mysql-session";
 import cookieParser from "cookie-parser";
 
 import routes from "./routes/index.js";
+import "./lib/passport.js";
+import * as helpers from "./lib/handlebars.js";
 import { pool } from "./database.js";
 
 // Intializations
