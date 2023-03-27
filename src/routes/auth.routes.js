@@ -7,6 +7,7 @@ import {
   renderSignUp,
   signUp,
   renderSignIn,
+  signIn,
   logout,
 } from "../controllers/auth.controller.js";
 
@@ -20,6 +21,7 @@ router.post("/signup", signupSchema, validator, signUp);
 
 // SINGIN
 router.get("/signin",isNotLoggedIn,renderSignIn);
+router.post("/signin", signIn);
 
 router.get("/logout", logout);
 

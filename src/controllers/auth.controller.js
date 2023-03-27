@@ -1,3 +1,4 @@
+import passport from "passport";
 import { encryptPassword } from "../lib/helpers.js";
 import { pool } from "../database.js";
 
@@ -27,7 +28,7 @@ export const signUp = async (req, res, next) => {
   newUser.id_rol = 2;
 
   try {
-    // Guardar en la base de datos
+    // Saving in the Database
     const [result] = await pool.query("INSERT INTO users SET ? ", newUser);
     newUser.id = result.insertId;
 
@@ -54,6 +55,22 @@ export const renderSignIn = (req, res, next) => {
   res.render("auth/signin", {
     username,
   });
+};
+
+/*export const signIn = passport.authenticate("local.signin", {
+  successRedirect: "/profile",
+  failureRedirect: "/signin?username=",
+  failureMessage: true,
+  failureFlash: true,
+});*/
+
+export const signIn = (req, res, next) => {
+  passport.authenticate('local.signin', {
+    successRedirect: '/profile',
+    failureRedirect: '/signin?username='+req.body.email,
+    failureMessage: true,
+    failureFlash: true,
+  })(req, res, next);
 };
 
 
