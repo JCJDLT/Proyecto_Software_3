@@ -29,7 +29,10 @@ app.engine(
       partialsDir: path.join(app.get("views"), "partials"),
       extname: ".hbs",
       helpers:{
-      }
+        foo: function () { return console.log('test'); },
+        when: helpers.funciones,
+        dateFormat: helpers.dateFormat,
+    }
     }).engine
   );
 app.set("view engine", ".hbs");
