@@ -106,3 +106,23 @@ body::before {
   background: #d35abdd5;
   color: white;
 }
+
+.nav-link i {
+  margin-right: 10px;
+}
+
+.fab {
+  font-size: 21px; /* aumenta el tamaño de los iconos a 24px */
+}
+
+.fas {
+  font-size: 20px; /* aumenta el tamaño de los iconos a 24px */
+}
+
+a.text {
+  color: #d35abdd5;
+}
+
+.navbar-brand {
+  font-size: 1.1rem;
+}
