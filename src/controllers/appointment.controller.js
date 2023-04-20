@@ -29,8 +29,67 @@ export const addAppointments = async (req, res, next) => {
     }
 
     const newAppointment = await buildAppointment(date, start_time, nails, req, 0);
+    console.log(newAppointment)
     await pool.query("INSERT INTO appointment SET ? ", [newAppointment]);
     req.flash("success", "Registro exitosamente");
+    res.redirect("/profile");
+};
+
+export const deleteAppointment = async (req, res) => {
+    const { id } = req.params;
+    await pool.query("UPDATE appointment SET id_state = ? WHERE id = ?", [3, id]);
+    req.flash("success", "La cita se ha cancelado correctamente");
+    if (req.user.id_rol == 1) {
+        res.redirect("/appointment");
+    } else {
+        res.redirect("/profile");
+    }
+};
+
+export const renderEditAppointment = async (req, res) => {
+    const { id } = req.params;
+    const selectedItem = req.query.selectedItem;
+    const dateInput = req.query.date;
+    const [rows] = await pool.query("SELECT * FROM appointment WHERE id = ?", [id]);
+
+    if (selectedItem == null && dateInput == null) {
+        res.render("appointment/edit", {
+            appointment: rows[0],
+            getFechaActual,
+        });
+    } else {
+        if (selectedItem != null) {
+            validationPriceNails(selectedItem, res);
+        }
+        if (dateInput != null) {
+            validationTimes(dateInput, res);
+        }
+    }
+};
+
+export const editAppointment = async (req, res) => {
+    const { id } = req.params;
+    const { date, start_time, nails, timeA } = req.body;
+
+    var start = start_time;
+
+    if (start_time == "") { start = timeA }
+
+    const newAppointment = await buildAppointment(date, start_time, nails, req, 1);
+    console.log(newAppointment)
+
+    if (newAppointment.start_time == "Invalid") {
+        req.flash("message", "Para dejar la misma hora, tambien debes dejar la misma fecha");
+        return res.redirect("/appointment/edit/" + id);
+    }
+
+    if (start < getHoraActual() && date == getFechaActual()) {
+        req.flash("message", "Debes agendar la cita en los horarios disponibles, verifica la fecha y la hora");
+        return res.redirect("/appointment/edit/" + id);
+    }
+
+    await pool.query("UPDATE appointment set ? WHERE id = ?", [newAppointment, id]);
+    req.flash("success", "Cita actualizada correctamente");
     res.redirect("/profile");
 };
 
