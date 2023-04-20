@@ -5,3 +5,8 @@ export const signupSchema = [
     body("start_time").notEmpty().withMessage("Selecciona la hora"),
     body("price").notEmpty().withMessage("Selecciona un tipo de uñas"),
 ]
+
+export const signupSchemaEdit = [
+    body("date").notEmpty().withMessage("Selecciona una fecha"),
+    body("price").notEmpty().withMessage("Selecciona un tipo de uñas"),
+]

@@ -1,0 +1,126 @@
+<div class="container p-4">
+  <div class="row">
+    <div class="col-md-4 mx-auto">
+      <div class="card bg-dark">
+        <div class="card-body">
+          <form action="/appointment/edit/{{appointment.id}}" method="POST">
+            <h3 class="text-center fw-bold mb-4">Editar cita</h3>
+
+            <div class="form-group">
+              <div class="row">
+                <div class="col">
+                  <label for="date">Selecciona la fecha</label>
+                  <input type="date" id="date" name="date" class="form-control mb-3" min="{{getFechaActual}}" />
+                </div>
+                <div class="col">
+                  <label for="dateA">Fecha antigua</label>
+                  <input type="date" id="dateA" name="dateA" class="form-control mb-3" min="{{getFechaActual}}"
+                    value="{{dateFormat appointment.date 'YYYY-MM-DD'}}" readonly />
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="row">
+                <div class="col">
+                  <label for="start_time">Selecciona la hora:</label>
+                  <select id="time" name="start_time" class="form-select mb-3">
+                    <option value="">Dejar la misma hora</option>
+                  </select>
+                </div>
+                <div class="col">
+                  <label for="timeA">Hora antigua</label>
+                  <input name="timeA" type="text" class="form-control mb-3" value="{{appointment.start_time}}"
+                    readonly />
+                </div>
+              </div>
+            </div>
+
+            <label for="nails">Tipo de uñas:</label>
+            <select name="nails" id="nails" class="form-select mb-3" aria-label="Default select example">
+              <option selected>Abre este menu de selección</option>
+              <option value="polygel">Polygel</option>
+              <option value="acrilico">Acrílico</option>
+              <option value="pressOn">Press on</option>
+              <option value="semipermanente">Semipermanente</option>
+              <option value="tradicional">Tradicional</option>
+            </select>
+            <label for="price">Precio</label>
+            <input type="float" name="price" id="price" placeholder="$" class="form-control mb-3" readonly />
+
+            <button class="btn bg-color-button btn-block w-100">
+              Guardar
+            </button>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+
+  const dateInput = document.getElementById('date');
+  const select = document.getElementById("time");
+
+  const startHour = 8; // Hora de inicio
+  const endHour = 18; // Hora de fin
+  let availableHours = []; // Lista de horas disponibles
+
+  dateInput.addEventListener('change', () => {
+    const date = dateInput.value;
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', `/appointment/add?date=${date}`);
+    xhr.onload = () => {
+      if (xhr.status === 200) {
+        const occupiedTimesJ = JSON.parse(xhr.responseText);
+        const occupiedTimes = occupiedTimesJ.rows;
+        select.innerHTML = "<option value=''>Dejar la misma hora</option>";
+        availableHours = [];
+        // Crear una lista de todas las horas del día
+        for (let hour = startHour; hour <= endHour; hour += 2) {
+          if (hour < 10) {
+            availableHours.push(`0${hour}:00:00`);
+          } else {
+            availableHours.push(`${hour}:00:00`);
+          }
+        }
+
+        const occupiedStartTimes = occupiedTimes.map((time) => time.start_time);
+        let filteredHours = availableHours.filter((hour) => !occupiedStartTimes.includes(hour));
+
+        // Agregar las horas disponibles al select
+        for (const hour of filteredHours) {
+          // Crear una nueva opción para el select
+          const option = document.createElement("option");
+
+          // Asignar la hora disponible a la propiedad "text" y "value" de la opción
+          option.text = hour;
+          option.value = hour;
+
+          // Agregar la opción al select
+          select.appendChild(option);
+        }
+      } else {
+        console.error('Error:', xhr.statusText);
+      }
+    };
+    xhr.send();
+  });
+
+  const selectedItem = document.getElementById('nails')
+  const myInput = document.querySelector('#price');
+  selectedItem.addEventListener('change', () => {
+    const xhr = new XMLHttpRequest();
+    const url = `/appointment/edit/{{appointment.id}}/?selectedItem=${selectedItem.value}`;
+    xhr.open('GET', url);
+    xhr.onload = () => {
+      const response = JSON.parse(xhr.responseText);
+      const nuevoValor = response.resultado;
+      // Actualiza el valor del campo de texto
+      myInput.value = nuevoValor;
+    };
+    xhr.send();
+  });
+</script>

@@ -1,0 +1,29 @@
+<div class="container p-4">
+    <div class="row">
+        {{#each appointment}}
+        <div class="col-md-3 mb-5">
+            <div class="card" style="width: 15rem;">
+                <div class="card-body text-center bg-dark">
+                    <p class="card-text mb-1">{{dateFormat date 'YYYY-MM-DD'}}</p>
+                    <hr class="my-1">
+                    <p class="card-text mb-1">{{start_time}}</p>
+                    <hr class="my-1">
+                    <p class="card-text mb-1">{{name}}</p>
+                    <hr class="my-1">
+                    <p class="card-text mb-1">{{price}}</p>
+                </div>
+            </div>
+        </div>
+
+        {{else}}
+        <div class="col-md-4 mx-auto">
+            <div class="card card-body text-center bg-dark text-light">
+                <h2>No hay citas en tu historial</h2>
+                <a href="/appointment/add" class="btn bg-color-button  m-4">
+                    Agend Una!
+                </a>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+</div>

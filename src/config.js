@@ -9,4 +9,4 @@ export const database = {
   database: process.env.DATABASE_NAME || "nails_by_johanna",
 };
 
-export const port = process.env.PORT || 4100;
+export const port = process.env.PORT || 5000;
