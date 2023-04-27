@@ -31,4 +31,3 @@ jobs:
     - run: npm test
     - name: Restart pm2 process
       if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true))
-      run: pm2 restart /home/ubuntu/nails/_work/Proyecto_Software_3/Proyecto_Software_3/src/index.js
