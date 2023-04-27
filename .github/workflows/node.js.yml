@@ -6,6 +6,8 @@ name: Node.js CI
 on:
   push:
     branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
   build:
@@ -27,4 +29,6 @@ jobs:
     - run: npm ci
     - run: npm run build --if-present
     - run: npm test
-    - run: pm2 restart /home/ubuntu/nails/_work/Proyecto_Software_3/Proyecto_Software_3/src/index.js
+    - name: Restart server
+      if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
+      run: pm2 restart /home/ubuntu/nails/_work/Proyecto_Software_3/Proyecto_Software_3/src/index.js
