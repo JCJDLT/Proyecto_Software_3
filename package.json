@@ -9,7 +9,7 @@
   },
   "scripts": {
     "dev": "nodemon src/index.js -L",
-    "test": "NODE_OPTIONS=--experimental-vm-modules jest --detectOpenHandles --forceExit"
+    "test": "set NODE_OPTIONS=--experimental-vm-modules jest --detectOpenHandles --forceExit"
 
   },
   "keywords": [],
