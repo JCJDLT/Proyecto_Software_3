@@ -7,3 +7,10 @@ describe("GET /", () => {
         expect(response.statusCode).toBe(200);
     })
 });
+
+describe("GET /appointment", () => {
+    test("deberia responder con un estado 200",async () =>{
+        const response = await request(app).get("/appointment").send();
+        expect(response.statusCode).toBe(200);
+    })
+});

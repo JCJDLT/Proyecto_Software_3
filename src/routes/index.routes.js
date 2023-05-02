@@ -11,6 +11,6 @@ router.get("/", renderIndex);
 
 router.get("/consulta", consulta);
 
-router.get("/catalogo", renderCatalogo)
+router.get("/catalogue", renderCatalogo)
 
 export default router;

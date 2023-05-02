@@ -17,22 +17,31 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
         {{#if user}}
+        <a class="nav-link" href="/catalogue" role="button">
+          Catalogo
+        </a>
+        {{#when user.id_rol 'eq' 1}}
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
             aria-expanded="false">
-            Opciones
+            Admin
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             {{! foo }}
-            {{#when user.id_rol 'eq' 1}}
-            <a class="dropdown-item" href="/admin">Admin</a>
-            <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="/appointment">Lista de citas</a>
+          </div>
+        </li>
+        {{/when}}
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            Citas
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            {{! foo }}
+            <a class="dropdown-item" href="/profile">Mis citas</a>
             <div class="dropdown-divider"></div>
-            {{/when}}
             <a class="dropdown-item" href="/appointment/add">Agendar cita</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="/catalogo">Catalogo</a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="/records">Historial</a>
           </div>
@@ -43,7 +52,6 @@
             {{user.fullname}}
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="/profile">Perfil</a></li>
             <li><a class="dropdown-item" href="/logout">Salir</a></li>
           </ul>
         </li>
