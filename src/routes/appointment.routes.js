@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { isLoggedIn } from "../lib/auth.js";
 import {
+    renderAppointments,
     renderAppointmentsAdd,
     addAppointments,
     deleteAppointment,
@@ -15,6 +16,7 @@ const router = Router();
 router.use(isLoggedIn);
 
 // Routes appoiment/
+router.get("/", renderAppointments);
 router.get("/add", renderAppointmentsAdd);
 
 router.post("/add", signupSchema, validatorApointment, addAppointments);

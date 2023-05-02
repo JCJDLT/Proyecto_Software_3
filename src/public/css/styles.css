@@ -41,17 +41,8 @@ body::before {
   background-size: cover;
 }
 
-.bg-signin-signup {
-  background: #d35abd;
-}
-
 .bg-color-button {
   background: #d35abd;
-  color: white;
-}
-
-.bg-color-button-signin {
-  background: #52cffe;
   color: white;
 }
 

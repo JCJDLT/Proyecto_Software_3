@@ -43,11 +43,7 @@ export const signUp = async (req, res, next) => {
 
     // Enviar el correo electrónico
     transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        console.log(error);
-      } else {
-        console.log('Correo electrónico enviado: ' + info.response);
-      }
+      error ? console.log(error) : console.log('Correo electrónico enviado: ' + info.response);
     });
 
     req.login(newUser, (err) => {
