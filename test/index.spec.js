@@ -8,9 +8,9 @@ describe("GET /", () => {
     })
 });
 
-describe("GET /appointment", () => {
+describe("GET /catalogo", () => {
     test("deberia responder con un estado 200",async () =>{
-        const response = await request(app).get("/appointment").send();
+        const response = await request(app).get("/catalogo").send();
         expect(response.statusCode).toBe(200);
     })
 });
