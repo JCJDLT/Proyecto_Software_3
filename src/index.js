@@ -6,7 +6,7 @@ await import('./database.js');
 
 app.listen(port);
 try {
-    recordatorio();
+    await recordatorio();
 } catch (error) {
     req.flash("error", "Disculpe ocurrio un error en el sistema");
 }

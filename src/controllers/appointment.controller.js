@@ -20,14 +20,14 @@ export const renderAppointmentsAdd = async (req, res, next) => {
     } else {
         if (selectedItem != null) {
             try {
-                validationPriceNails(selectedItem, res);
+                await validationPriceNails(selectedItem, res);
             } catch (error) {
                 req.flash("error", "Disculpe ocurrio un error en el sistema");
             }
         }
         if (dateInput != null) {
             try {
-                validationTimes(dateInput, res);
+                await validationTimes(dateInput, res);
             } catch (error) {
                 req.flash("error", "Disculpe ocurrio un error en el sistema");
             }
@@ -88,14 +88,14 @@ export const renderEditAppointment = async (req, res) => {
     } else {
         if (selectedItem != null) {
             try {
-                validationPriceNails(selectedItem, res);
+                await validationPriceNails(selectedItem, res);
             } catch (error) {
                 req.flash("error", "Disculpe ocurrio un error en el sistema");
             }
         }
         if (dateInput != null) {
             try {
-                validationTimes(dateInput, res);
+                await validationTimes(dateInput, res);
             } catch (error) {
                 req.flash("error", "Disculpe ocurrio un error en el sistema");
             }
