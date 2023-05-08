@@ -5,5 +5,9 @@ import {port} from './config.js'
 await import('./database.js');
 
 app.listen(port);
-recordatorio();
+try {
+    recordatorio();
+} catch (error) {
+    req.flash("error", "Disculpe ocurrio un error en el sistema");
+}
 console.log("Servidor en el puerto", port);

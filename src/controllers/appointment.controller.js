@@ -1,6 +1,5 @@
 import { pool } from "../database.js";
-import { sumTime, getFechaActual, getHoraActual } from "../lib/helpers.js";
-import { transporter } from "../lib/helpers.js";
+import { sumTime, getFechaActual, getHoraActual, transporter} from "../lib/helpers.js";
 
 export const renderAppointments = async (req, res, next) => {
     await pool.query("UPDATE appointment set id_state = 3 WHERE date < ? AND id_state = 1", [getFechaActual()]);
@@ -20,10 +19,18 @@ export const renderAppointmentsAdd = async (req, res, next) => {
         });
     } else {
         if (selectedItem != null) {
-            validationPriceNails(selectedItem, res);
+            try {
+                validationPriceNails(selectedItem, res);
+            } catch (error) {
+                req.flash("error", "Disculpe ocurrio un error en el sistema");
+            }
         }
         if (dateInput != null) {
-            validationTimes(dateInput, res);
+            try {
+                validationTimes(dateInput, res);
+            } catch (error) {
+                req.flash("error", "Disculpe ocurrio un error en el sistema");
+            }
         }
     }
 };
@@ -47,7 +54,6 @@ export const deleteAppointment = async (req, res) => {
     const { id } = req.params;
     await pool.query("UPDATE appointment SET id_state = 3 WHERE id = ?", [id]);
     const [result] = await pool.query("SELECT u.email,u.fullname FROM appointment a join users u on a.id_user = u.id where a.id = ?", id)
-    console.log(result[0].email)
 
     if (req.user.id_rol == 1) {
         // Configurar el contenido del correo electrónico
@@ -81,10 +87,18 @@ export const renderEditAppointment = async (req, res) => {
         });
     } else {
         if (selectedItem != null) {
-            validationPriceNails(selectedItem, res);
+            try {
+                validationPriceNails(selectedItem, res);
+            } catch (error) {
+                req.flash("error", "Disculpe ocurrio un error en el sistema");
+            }
         }
         if (dateInput != null) {
-            validationTimes(dateInput, res);
+            try {
+                validationTimes(dateInput, res);
+            } catch (error) {
+                req.flash("error", "Disculpe ocurrio un error en el sistema");
+            }
         }
     }
 };
@@ -93,7 +107,7 @@ export const editAppointment = async (req, res) => {
     const { id } = req.params;
     const { date, start_time, nails, timeA } = req.body;
 
-    var start = start_time;
+    let start = start_time;
 
     if (start_time == "") { start = timeA }
 
@@ -139,7 +153,7 @@ export const buildAppointment = async (date, start_time, nails, req, opcion) => 
 
 export const validationPriceNails = async (selectedItem, res) => {
     const [result] = await pool.query("SELECT * FROM nails WHERE name = ?", [selectedItem]);
-    var resultado;
+    let resultado;
     if (result.length > 0) {
         resultado = result[0].price;
     } else {
@@ -150,7 +164,7 @@ export const validationPriceNails = async (selectedItem, res) => {
 
 export const validationTimes = async (dateInput, res) => {
     const [result] = await pool.query("SELECT start_time FROM appointment WHERE date = ? AND id_state = 1", [dateInput]);
-    var rows;
+    let rows;
     if (result.length > 0) {
         rows = result;
     } else {

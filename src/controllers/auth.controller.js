@@ -1,7 +1,6 @@
 import passport from "passport";
-import { encryptPassword } from "../lib/helpers.js";
+import { encryptPassword , transporter} from "../lib/helpers.js";
 import { pool } from "../database.js";
-import { transporter } from "../lib/helpers.js";
 
 export const renderSignUp = (req, res) => {
   const { fullname, email, phone } = req.query;

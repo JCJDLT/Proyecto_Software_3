@@ -5,14 +5,14 @@ $('.portfolio-menu ul li').click(function(){
 		itemSelector: '.item',
 		layoutMode: 'fitRows'
 	})
-	var selector = $(this).attr('data-filter');
+	let selector = $(this).attr('data-filter');
 	$('.portfolio-item').isotope({
 		filter:selector
 	});
 	return  false;
 });
 $(document).ready(function() {
-var popup_btn = $('.popup-btn');
+let popup_btn = $('.popup-btn');
 popup_btn.magnificPopup({
 type : 'image',
 gallery : {
