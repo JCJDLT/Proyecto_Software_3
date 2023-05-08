@@ -1,7 +1,9 @@
 import { pool } from "../database.js";
 import { sumTime, getFechaActual, getHoraActual } from "../lib/helpers.js";
+import { transporter } from "../lib/helpers.js";
 
 export const renderAppointments = async (req, res, next) => {
+    await pool.query("UPDATE appointment set id_state = 3 WHERE date < ? AND id_state = 1", [getFechaActual()]);
     const [rows] = await pool.query("SELECT a.id,u.fullname,a.date,a.start_time,n.name,n.price,ap.state FROM appointment a JOIN users u ON a.id_user = u.id JOIN nails n ON a.id_nails = n.id JOIN appointment_state ap ON a.id_state = ap.id WHERE ap.state = 'pendiente'");
     res.render("appointment/list", {
         appointment: rows
@@ -38,18 +40,32 @@ export const addAppointments = async (req, res, next) => {
     const newAppointment = await buildAppointment(date, start_time, nails, req, 0);
     await pool.query("INSERT INTO appointment SET ? ", [newAppointment]);
     req.flash("success", "Registro exitosamente");
-    res.redirect("/profile");
+    req.user.id_rol == 1 ? res.redirect("/appointment") : res.redirect("/profile");
 };
 
 export const deleteAppointment = async (req, res) => {
     const { id } = req.params;
-    await pool.query("UPDATE appointment SET id_state = ? WHERE id = ?", [3, id]);
-    req.flash("success", "La cita se ha cancelado correctamente");
+    await pool.query("UPDATE appointment SET id_state = 3 WHERE id = ?", [id]);
+    const [result] = await pool.query("SELECT u.email,u.fullname FROM appointment a join users u on a.id_user = u.id where a.id = ?", id)
+    console.log(result[0].email)
+
     if (req.user.id_rol == 1) {
-        res.redirect("/appointment");
-    } else {
-        res.redirect("/profile");
+        // Configurar el contenido del correo electrónico
+        const mailOptions = {
+            from: 'nailsbyjohannadelatorre@gmail.com',
+            to: result[0].email,
+            subject: 'Cita cancelada',
+            text: `${result[0].fullname} su cita se ha cancelado, pongase en contacto para cualquier duda`
+        };
+
+        // Enviar el correo electrónico
+        transporter.sendMail(mailOptions, (error, info) => {
+            error ? console.log(error) : console.log('Correo electrónico enviado: ' + info.response);
+        });
     }
+
+    req.flash("success", "La cita se ha cancelado correctamente");
+    req.user.id_rol == 1 ? res.redirect("/appointment") : res.redirect("/profile");
 };
 
 export const renderEditAppointment = async (req, res) => {
@@ -95,7 +111,7 @@ export const editAppointment = async (req, res) => {
 
     await pool.query("UPDATE appointment set ? WHERE id = ?", [newAppointment, id]);
     req.flash("success", "Cita actualizada correctamente");
-    res.redirect("/profile");
+    req.user.id_rol == 1 ? res.redirect("/appointment") : res.redirect("/profile");
 };
 
 export const buildAppointment = async (date, start_time, nails, req, opcion) => {
@@ -133,7 +149,6 @@ export const validationPriceNails = async (selectedItem, res) => {
 }
 
 export const validationTimes = async (dateInput, res) => {
-    //const [result] = await pool.query("SELECT start_time FROM appointment WHERE date = ? AND (id_state = 1 OR id_state = 2)", [dateInput]);
     const [result] = await pool.query("SELECT start_time FROM appointment WHERE date = ? AND id_state = 1", [dateInput]);
     var rows;
     if (result.length > 0) {
