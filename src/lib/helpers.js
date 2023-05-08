@@ -22,6 +22,11 @@ export const getFechaActual = () => {
   return currentDate;
 }
 
+export const fechaRecordatorio = () => {
+  const currentDate = moment().add(1, 'days').format().split('T')[0];
+  return currentDate;
+}
+
 export const getHoraActual = () => {
   const now = new Date();
   now.setMinutes(now.getMinutes());
