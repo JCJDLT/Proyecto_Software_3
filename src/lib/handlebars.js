@@ -4,7 +4,7 @@ import moment from "moment/moment.js";
 export const timeago = (savedTimestamp) => format(savedTimestamp);
 
 export const funciones = (operand_1, operator, operand_2, options) => {
-    var operators = {
+    let operators = {
         'eq': function (l, r) { return l == r; },
         'noteq': function (l, r) { return l != r; },
         'gt': function (l, r) { return Number(l) > Number(r); },

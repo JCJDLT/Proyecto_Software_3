@@ -1,5 +1,5 @@
 import { pool } from "../database.js";
-import { sumTime, getFechaActual, getHoraActual, transporter} from "../lib/helpers.js";
+import { sumTime, getFechaActual, getHoraActual, transporter } from "../lib/helpers.js";
 
 export const renderAppointments = async (req, res, next) => {
     await pool.query("UPDATE appointment set id_state = 3 WHERE date < ? AND id_state = 1", [getFechaActual()]);
@@ -135,7 +135,15 @@ export const buildAppointment = async (date, start_time, nails, req, opcion) => 
     };
 
     if (opcion == 1) {
-        newAppointment.start_time = start_time == "" ? date == dateA ? (newAppointment.end_time = sumTime(timeA, "01:59:00"), timeA) : "Invalid" : start_time;
+        if (start_time == "") {
+            if (date == dateA) {
+                newAppointment.start_time = timeA;
+            } else {
+                newAppointment.start_time = "Invalid";
+            }
+        } else {
+            newAppointment.start_time = start_time;
+        }
         newAppointment.end_time = sumTime(newAppointment.start_time, "01:59:00");
     } else {
         newAppointment.start_time = start_time;

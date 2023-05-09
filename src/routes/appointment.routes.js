@@ -9,7 +9,7 @@ import {
     editAppointment,
 } from "../controllers/appointment.controller.js";
 import { signupSchema, signupSchemaEdit } from "../validators/appointmentadd.validator.js";
-import { validatorApointment, validatorEditApointment} from "../middlewares/validator.middleware.js";
+import { validatorApointment } from "../middlewares/validator.middleware.js";
 const router = Router();
 
 // Authorization
@@ -24,6 +24,6 @@ router.post("/add", signupSchema, validatorApointment, addAppointments);
 router.get("/delete/:id", deleteAppointment);
 
 router.get("/edit/:id", renderEditAppointment);
-router.post("/edit/:id",signupSchemaEdit, validatorEditApointment ,editAppointment);
+router.post("/edit/:id",signupSchemaEdit, validatorApointment ,editAppointment);
 
 export default router;
