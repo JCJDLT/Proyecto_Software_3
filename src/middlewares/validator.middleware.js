@@ -12,7 +12,7 @@ export const validator = (req, res, next) => {
         req.flash('errors', errors.array().map(error => error.msg));
         console.log(url)
         const queryString = `?fullname=${encodeURIComponent(fullname)}&email=${encodeURIComponent(email)}&phone=${encodeURIComponent(phone)}`;
-        if (url.startsWith("https://ec2-100-27-12-164.compute-1.amazonaws.com/")) {
+        if (url.startsWith("http://ec2-100-27-12-164.compute-1.amazonaws.com/")) {
             return res.status(400).redirect(req.originalUrl + queryString);
         }
     }
@@ -29,7 +29,7 @@ export const validatorApointment = (req, res, next) => {
     if (!errors.isEmpty()) {
         req.flash('errors', errors.array().map(error => error.msg));
         console.log(url)
-        if (url.startsWith("https://ec2-100-27-12-164.compute-1.amazonaws.com/")) {
+        if (req.query.url.startsWith("http://ec2-100-27-12-164.compute-1.amazonaws.com/")) {
             return res.status(400).redirect(req.originalUrl);
         }
     }

@@ -16,6 +16,7 @@ import { pool } from "./database.js";
 
 // Intializations
 const app = express();
+app.disable("x-powered-by");
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const MySQLStore = expressMySQLSession(session);
 
